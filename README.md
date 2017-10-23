@@ -32,6 +32,10 @@ structures:
 * [Comonad](#comonad)
 * [Bifunctor](#bifunctor)
 * [Profunctor](#profunctor)
+* [Strong](#strong)
+* [Choice](#choice)
+* [Costrong](#costrong)
+* [Cochoice](#cochoice)
 
 <img src="figures/dependencies.png" width="888" height="257" />
 
@@ -768,6 +772,91 @@ The `profunctor` method takes two arguments:
     3. No parts of `g`'s return value should be checked.
 
 3. `promap` must return a value of the same Profunctor
+
+### Strong
+
+A value that implements the Strong specification must also implement
+the [Profunctor](#profunctor) specification.
+
+1. p.promap(([a]) => a, a => a) = p.first().promap(a => a, ([a]) => a)
+2. p.first().first() = p.first().promap(([[a,b],c]) => [a,[b,c]], ([a,[b,c]]) => [[a,b],c])
+
+#### `first` method
+
+```hs
+first :: Strong p => p a b ~> p (Tuple a c) (Tuple b c)
+```
+
+A value which has a Strong must provide an `first` method. The
+`first` method takes no arguments:
+
+    p.first()
+
+1. `first` must return a value of the same Strong.
+
+### Costrong
+
+A value that implements the Strong specification must also implement
+the [Profunctor](#profunctor) specification.
+
+1.
+2.
+
+#### `unfirst` method
+
+```hs
+unfirst :: Costrong p => p (Tuple a c) (Tuple b c) ~> p a b
+```
+
+A value which has a Costrong must provide an `unfirst` method. The 
+`unfirst` method takes no arguments:
+
+    p.unfirst()
+
+1. `unfirst` must return a value of the same Strong.
+
+### Choice
+
+A value that implements the Choice specification must also implement
+the [Profunctor](#profunctor) specification.
+
+1. 
+2.
+
+#### `left` method
+
+```hs
+left :: Choice p => p a b -> p (Either a c) (Either b c)
+```
+
+A value which has a Choice must provide an `left` method. The
+`left` method takes no arguments:
+
+    p.left()
+
+1. `left` must return a value of the same Choice.
+
+
+### Cochoice
+
+A value that implements the Cochoice specification must also implement
+the [Profunctor](#profunctor) specification.
+
+1.
+2.
+
+#### `unleft` method
+
+```hs
+unleft :: Cochoice p => p (Either a c) (Either b c) ~> p a b
+```
+
+A value which has a Strong must provide an `unleft` method. The
+`unleft` method takes no arguments:
+
+    p.unleft()
+
+1. `unleft` must return a value of the same Cochoice.
 
 ## Derivations
 
